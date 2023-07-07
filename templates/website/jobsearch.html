@@ -1,0 +1,112 @@
+{% extends 'website/base.html' %}
+
+
+{% block content %}
+<div class="container"> 
+    
+    <div class="row">
+        <div class="col-md-4">
+            <form class="form-actions" method="get" action="{% url 'job_search' %}">
+                {% csrf_token %}
+                <div class="col">
+                    <input class="form-actions form-control-lg border-1" type="search" name="job_search_query" placeholder="Search" aria-label="Search">
+                    <div class="mb-2 mt-2 form-control">
+                        <select name="search_area" class="form-select">
+                            <option value="">Select City</option>
+                            
+                            {% for location in unique_location %}
+                                <option value="{{ location }}">{{ location }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col">
+                            <input type="number" name="min_salary" class="form-control" placeholder="min salary" value="">
+                        </div>
+                        <div class="col">
+                            <input type="number" name="max_salary" class="form-control" placeholder="max salary" value="">
+                        </div>
+                    </div>
+
+                    <div class="mt-3">
+                        <select name="job_type" class="form-select">
+                            <option value="">Job Type</option>
+                            
+                            {% for job_type in unique_job_type %}
+                                <option value="{{ job_type }}">{{ job_type }}</option>
+                            {% endfor %}
+                            
+                        </select>
+                    </div>
+
+                    <div class="mt-3">
+                        <select name="position" class="form-select">
+                            <option value="">Position</option>
+                            
+                            {% for position in unique_position%}
+                                <option value="{{ position }}">{{ position }}</option>
+                            {% endfor %}
+                            
+                        </select>
+                    </div>
+
+                    <div class="mt-3">
+                        <select name="category" class="form-select">
+                            <option value="">Category Of Job</option>
+                            
+                            {% for category in unique_category%}
+                                <option value="{{ category }}">{{ category }}</option>
+                            {% endfor %}
+                            
+                        </select>
+                    </div>
+                    <button class="btn btn-primary mt-2" type="submit">Search</button>
+                </div>
+            </form>
+        </div>
+
+
+        <div class="col-md-8">
+
+            {% if job_search_query %}
+                <h1>Search Result: {{ job_search_query }}</h1>
+
+            {% endif %}
+
+            {% if search_area %}
+
+                <h1>Area: {{ search_area }}</h1>
+
+            {% endif %}
+                
+            {% if results %}
+                <ul>
+                {% for job in results %}
+
+                    <div class="d-grid gap-2">
+                        <a class="btn btn-light" href="{% url 'job_detail' job.id %}">
+                            <h3>{{ job.title }}</h3>
+                            <p>{{ job.description|truncatechars:50 }}</p>
+                        </a>
+                    </div>
+                    <hr>
+                    
+                {% endfor %}
+                </ul>    
+
+            {% else %}
+
+            <p>No results found.</p>
+
+            {% endif %}
+
+        </div>
+    </div>
+
+</div>
+
+
+
+{% endblock content %}
+    

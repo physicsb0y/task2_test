@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+{% load crispy_forms_tags %}
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <title>
+        
+        {% block title %}
+            JobMandu
+        {% endblock title %}
+            
+    </title>
+</head>
+<body>
+
+    
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+            <div class="container-fluid">
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+                    <a class="navbar-brand" href="{% url 'index' %}">JobMandu</a>
+
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="{% url 'index' %}">Home</a>
+                        </li>
+                        
+                            <li class="nav-item">
+                            <a class="nav-link" href="{% url 'job_list' %}">Find a Job</a>
+                            </li>
+                            
+                            {% if user.user_type == 'employer' %}
+                                
+                            <li class="nav-item">
+                            <a class="nav-link" href="{% url 'create_job' %}">Post a Job</a>
+                            </li>
+                       
+                            {% endif %}
+                        
+
+                        <li class="nav-item">
+                        <a class="nav-link" href="{% url 'about' %}">About Us</a>
+                        </li>
+
+                        <li class="nav-item">
+                        <a class="nav-link" href="{% url 'blog_page' %}">Blog</a>
+                        </li>
+
+                        <li class="nav-item">
+                        <a class="nav-link" href="{% url 'contact' %}">Contact</a>
+                        </li>
+                        
+                    </ul>
+                <form class="d-flex" action="{% url 'search' %}" method="GET">
+                    {% csrf_token %}
+                    <input class="form-control me-2" type="search"  name="search_query" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+
+
+                <ul class="navbar-nav m-auto me-auto mb-2 mb-lg-0">
+                    
+                    {% if user.is_authenticated %}
+                        
+                            
+                        <li class="nav-item m-2">
+                            <div class="d-flex align-items-center">
+                                <a class="nav-link" aria-current="page" href="#">{{ user.username }}</a>
+
+                                <div class="rounded-circle bg-primary d-flex flex-column justify-content-inline align-items-center m-3" style="width: 40px; height: 40px;">
+                                    {% if image %}
+                                    <img src="{{ user.image.url }}" alt="Image" class="rounded-circle" style="width: 40px; height: 40px;">
+                                    {% else %}
+                                    <img src="{% static 'images/defaultpp.jpg' %}" alt="Image" class="rounded-circle" style="width: 40px; height: 40px;">
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </li>
+
+                    
+                        <li class="nav-item m-3">
+                            <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                        </li>
+                    
+                    {% else %}
+
+                        <li class="nav-item me-2">
+                            <a class="nav-link" aria-current="page" href="{% url 'login' %}">Login</a>
+                        </li>
+
+
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Register As:
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{% url 'j_registration' %}">Job Seeker</a></li>
+                                <li><a class="dropdown-item" href="{% url 'e_registration' %}">Employer</a></li>
+                            </ul>
+                            </li>
+
+
+                    {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+   
+    
+    {% block content %}
+        
+    {% endblock content %}
+        
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+</body>
+</html>

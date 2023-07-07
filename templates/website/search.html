@@ -1,0 +1,62 @@
+{% extends 'website/base.html' %}
+
+
+
+{% block content %}
+    
+
+<div class="container">
+
+{% if search_query %}
+    
+
+<h3>Search Result for: "{{ search_query }}</h3>
+
+
+{% if blog_results %}
+    <ul>
+        
+        {% for blog in blog_results %}
+            <h6>@{{ blog.author }}</h6>
+            <a class="text-decoration-none" href="{% url 'blog_content' blog.id %}">
+                <h1>{{ blog.title }}</h1>
+                <hr>
+
+                <p>{{ blog.content|truncatechars:100 }}</p>
+            </a>
+        {% endfor %}
+            
+    </ul>
+    {% elif job_results %}
+
+    <ul>
+        {% for job in job_results %}
+
+        <div class="d-grid gap-2">
+            <a class="btn btn-light" href="{% url 'job_detail' job.id %}">
+                <h3>{{ job.title }}</h3>
+                <p>{{ job.description|truncatechars:50 }}</p>
+            </a>
+        </div>
+        <hr>
+
+        {% endfor %}
+    </ul>
+
+    
+        
+    {% endif %}
+    
+
+    {% else %}
+    <p>No results found.</p>
+{% endif %}
+
+
+
+
+</div>
+
+
+{% endblock content %}
+    
