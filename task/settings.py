@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-0yh=%w9m!w5%*fzw4kod6xg4ak4#v(^t$(e+_@f+h=*mcss0u*'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [*]
 
 
 # Application definition
@@ -84,15 +84,10 @@ WSGI_APPLICATION = 'task.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
+import dj_database_url
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'task2_db',
-        'USER': 'postgres',
-        'PASSWORD': '9886550',
-        'HOST': 'localhost',
-    }
+    'default': dj_database_url.parse('postgres://task_32k9_user:OY2WFvH2Qt5syNxACkZbTmnB415wupvF@dpg-cik2eb18g3nc2gf6gl50-a.oregon-postgres.render.com/task_32k9')
 }
 
 
