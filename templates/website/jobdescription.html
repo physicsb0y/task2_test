@@ -36,7 +36,7 @@
         </div>
 
         <div class="card-body align-items-center justify-content-center">
-            <a href="{% url 'apply_job' %}" class="card-link btn btn-primary btn-lg">Apply for this Job</a>
+            <a href="{% url 'apply_job' pk=job_post.id %}" class="card-link btn btn-primary btn-lg">Apply for this Job</a>
             <a href="{% url 'job_list' %}" class="card-link btn btn-primary btn-lg">See other Jobs</a>
         </div>
     </div>

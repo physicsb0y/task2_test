@@ -204,10 +204,14 @@ class JobSearchView(ListView):
 
 
 class JobApplicationView(CreateView):
-    model = JobPost
+    model = JobApplication
     form_class = JobApplicationForm
     template_name = 'website/job_apply.html'
     success_url = reverse_lazy('index')
+
+    def get(self, request, *args, **kwargs):
+        self.job_post = get_object_or_404(JobPost, id=self.kwargs['pk'])
+        return super().get(request, *args, **kwargs)
 
     def form_valid(self, form):
         job_post_id = self.kwargs['pk']
@@ -216,19 +220,25 @@ class JobApplicationView(CreateView):
         form.instance.post = job_post
         response = super().form_valid(form)
         return response
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["job_post_id"] = self.kwargs['pk']
+        return context
+    
 
 
-    def post(self, request):
-        form = JobApplicationForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return HttpResponse("Application submitted successfully!")
-        else:
-            return HttpResponse("Form is not valid, please check your inputs!")
-    def get(self, request):
-        form = JobApplicationForm()
-        context = {
-            'form': form
-        }
-        return render(request, 'website/job_apply.html', context)    
+    # def post(self, request):
+    #     form = JobApplicationForm(request.POST, request.FILES)
+    #     if form.is_valid():
+    #         form.save()
+    #         return HttpResponse("Application submitted successfully!")
+    #     else:
+    #         return HttpResponse("Form is not valid, please check your inputs!")
+    # def get(self, request):
+    #     form = JobApplicationForm()
+    #     context = {
+    #         'form': form
+    #     }
+    #     return render(request, 'website/job_apply.html', context)    
 
