@@ -228,17 +228,10 @@ class JobApplicationView(CreateView):
     
 
 
-    # def post(self, request):
-    #     form = JobApplicationForm(request.POST, request.FILES)
-    #     if form.is_valid():
-    #         form.save()
-    #         return HttpResponse("Application submitted successfully!")
-    #     else:
-    #         return HttpResponse("Form is not valid, please check your inputs!")
-    # def get(self, request):
-    #     form = JobApplicationForm()
-    #     context = {
-    #         'form': form
-    #     }
-    #     return render(request, 'website/job_apply.html', context)    
+class CategoryJobsView(ListView):
+    template_name = 'website/category_jobs.html'
+    context_object_name = 'jobs'
 
+    def get_queryset(self):
+        category_id = self.kwargs['category_id']
+        return JobPost.objects.filter(category_id=category_id)

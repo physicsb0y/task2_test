@@ -82,19 +82,21 @@
         <div class="container mt-3">
             <div class="row row-cols-1 row-cols-md-2 g-4">
                 {% for category in categories %}
-                    <div class="col">
-                        <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ category.category }}</h5>
-                            
-                            {% if description %}
-                                <p class="card-text">{{ category.description }}</p>
-                            {% endif %}
-                                
-                            
+                    <a href="{% url 'category_jobs' category.id %}">
+                        <div class="col">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ category.category }}</h5>
+                                    
+                                    {% if description %}
+                                        <p class="card-text">{{ category.description }}</p>
+                                    {% endif %}
+                                        
+                                    
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
+                    </a>
                 {% endfor %}
                     
                 
