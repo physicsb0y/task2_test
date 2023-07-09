@@ -18,11 +18,12 @@
                     <select name="search_area" class="form-select">
                         <option value="">Select City</option>
                         
-                        {% for location in unique_location %}
+                        {% for location in unique_locations %}
                             <option value="{{ location }}">{{ location }}</option>
                         {% endfor %}
                     </select>
                 </div>
+
 
                 <div class="row mt-3">
                     <div class="col">
@@ -48,7 +49,7 @@
                     <select name="position" class="form-select">
                         <option value="">Position</option>
                         
-                        {% for position in unique_position%}
+                        {% for position in unique_position %}
                             <option value="{{ position }}">{{ position }}</option>
                         {% endfor %}
                         

@@ -63,7 +63,7 @@ class JobRequirements(models.Model):
 class Blog(models.Model):
     title = models.CharField(max_length=500)
     author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

@@ -200,10 +200,7 @@ class JobSearchView(ListView):
             }
 
             return render(request, 'website/jobsearch.html', context)
-        # if not form.is_valid():
-        #     return render(request, 'website/jobsearch.html', context)
-        # return super().get(request, context)
-
+       
 
 
 class JobApplicationView(CreateView):

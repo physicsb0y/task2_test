@@ -38,7 +38,7 @@
                             <a class="nav-link" href="{% url 'job_list' %}">Find a Job</a>
                             </li>
                             
-                            {% if user.user_type == 'employer' %}
+                            {% if user.user_type == 'employer' or user.is_admin or user.is_staff %}
                                 
                             <li class="nav-item">
                             <a class="nav-link" href="{% url 'create_job' %}">Post a Job</a>

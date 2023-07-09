@@ -6,7 +6,7 @@ from .models import JobPost, Blog, JobApplication
 class JobPostForm(forms.ModelForm):
     class Meta:
         model = JobPost
-        fields = ['title', 'description', 'location', 'salary', 'job_type', 'category', 'requirements']
+        fields = ['title', 'description', 'location', 'salary', 'job_type', 'position', 'category', 'requirements']
 
 
 class BlogPostForm(forms.ModelForm):
