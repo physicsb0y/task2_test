@@ -80,9 +80,12 @@
         </div>
 
         <div class="container mt-3">
+            <h3 class="text-center">Category Wise Jobs</h3>
+            <hr>
             <div class="row row-cols-1 row-cols-md-2 g-4">
+                
                 {% for category in categories %}
-                    <a href="{% url 'category_jobs' category.id %}">
+                    <a href="{% url 'category_jobs' category.id %}" class="text-decoration-none">
                         <div class="col">
                             <div class="card">
                                 <div class="card-body">
@@ -101,6 +104,7 @@
                     
                 
             </div>
+            <hr>
         </div>
 
 

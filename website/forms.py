@@ -1,5 +1,16 @@
 from django import forms
 from .models import JobPost, Blog, JobApplication
+from . import models
+
+from django_select2 import forms as s2forms
+
+
+
+
+class RequirementsWidget(s2forms.ModelSelect2MultipleWidget):
+    search_fields = [
+        'requirement__icontains'
+    ]
 
 
 
@@ -7,6 +18,9 @@ class JobPostForm(forms.ModelForm):
     class Meta:
         model = JobPost
         fields = ['title', 'description', 'location', 'salary', 'job_type', 'position', 'category', 'requirements']
+        widgets = {
+            "requirements": RequirementsWidget
+        }
 
 
 class BlogPostForm(forms.ModelForm):

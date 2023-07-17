@@ -1,11 +1,16 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render
 from django.views.generic import ListView, CreateView, DetailView, DeleteView
-from django.views.generic.base import TemplateView
 from django.views import View
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.shortcuts import get_object_or_404
+
+from rest_framework.views import APIView
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from .serializers import JobPostSerializer
 
 from accounts.models import CustomUser
 from .forms import JobPostForm, BlogPostForm, SearchForm, JobSearchForm, JobApplicationForm
@@ -31,6 +36,9 @@ class AboutView(ListView):
     model = CustomUser
     template_name = 'website/about.html'
 
+
+
+@method_decorator(login_required, name='dispatch')
 class JobPostView(CreateView):
     form_class = JobPostForm
     template_name = 'website/jobpost.html'
@@ -235,3 +243,14 @@ class CategoryJobsView(ListView):
     def get_queryset(self):
         category_id = self.kwargs['category_id']
         return JobPost.objects.filter(category_id=category_id)
+    
+
+
+#==========================API=====================
+
+
+class JobPostApiView(APIView):
+    @login_required
+    def get(self, request):
+        models = JobPost.objects.all()
+        return Response(models.values())

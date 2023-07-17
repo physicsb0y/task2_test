@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -43,6 +43,10 @@ INSTALLED_APPS = [
 
     'website.apps.WebsiteConfig',
     'accounts.apps.AccountsConfig',
+
+    'rest_framework',
+
+    'django_select2',
   
 ]
 
@@ -81,6 +85,18 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'task.wsgi.application'
 
+
+# CACHES = {
+#     "default": {
+#         "BACKEND": "django_redis.cache.RedisCache",
+#         "LOCATION": "redis://127.0.0.1:6379/2",
+#         "OPTIONS": {
+#             "CLIENT_CLASS": 'django_redis.client.DefaultClient',
+#         }
+#     }
+# }
+
+# SELECT2_CACHE_BACKEND = "select2"
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -126,7 +142,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
-STATIC_ROOT = str(BASE_DIR / 'static')
+STATIC_ROOT = os.path.join(BASE_DIR / 'static')
 
 #Media files
 
