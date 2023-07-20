@@ -6,7 +6,15 @@
 <div class="container">
     <h1> {{blog.title}} </h1>
     <hr>
-    <p>{{ blog.content }}</p>
+    <p>{{ blog.content|safe }}</p>
+    <p></p>
+    
+    <!-- {% if hashtags %} -->
+    {% for hashtag in blog.hashtags %}
+        <p>#{{hashtag}}</p>
+    {% endfor %}
+    <!-- {% endif %} -->
+        
 </div>
 
 {% endblock content %}

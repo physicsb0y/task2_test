@@ -7,7 +7,7 @@
     
     {% for job in jobs %}
     <a href="{% url 'job_detail' job.id %}"><h2>{{ job.title }}</h2></a>
-    <p>{{ job.description }}</p>
+    <p>{{ job.description|truncatechars:100|safe }}</p>
     
     
     {% empty %}

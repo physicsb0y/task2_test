@@ -43,10 +43,12 @@ INSTALLED_APPS = [
 
     'website.apps.WebsiteConfig',
     'accounts.apps.AccountsConfig',
+    'api.apps.ApiConfig',
 
     'rest_framework',
 
     'django_select2',
+    'ckeditor'
   
 ]
 
@@ -103,7 +105,13 @@ WSGI_APPLICATION = 'task.wsgi.application'
 import dj_database_url
 
 DATABASES = {
-    'default': dj_database_url.parse('postgres://task_32k9_user:OY2WFvH2Qt5syNxACkZbTmnB415wupvF@dpg-cik2eb18g3nc2gf6gl50-a.oregon-postgres.render.com/task_32k9')
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'task2a_db',
+        'USER': 'postgres',
+        'PASSWORD': '9886550',
+        'HOST': 'localhost',
+    }    
 }
 
 
@@ -126,6 +134,26 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+#ckeditor
+
+CKEDITOR_UPLOAD_PATH = 'uploads/'
+CKEDITOR_IMAGE_BACKEND = 'pillow'
+CKEDITOR_JQUERY_URL = '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'
+
+CKEDITOR_CONFIGS = {
+    'default': 
+    {
+        'toolbar': 'full',
+        'width': 'auto',
+        'extraPlugins': ','.join([
+            'codesnippet',
+        ]),
+    },
+}
+
+
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
@@ -142,7 +170,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
-STATIC_ROOT = os.path.join(BASE_DIR / 'static')
+STATIC_ROOT = str(BASE_DIR / 'static')
 
 #Media files
 

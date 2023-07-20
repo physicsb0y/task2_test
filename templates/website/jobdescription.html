@@ -10,7 +10,7 @@
             <p class="text-muted text-center">Posted by: {{ job_post.employer }} at {{ job_post.created_at }}</p>
             <hr>
             <h3 class="display-3 text-center">Description</h3>
-            <p class="card-text">{{ job_post.description }}</p>
+            <p class="card-text">{{ job_post.description|safe }}</p>
         </div>
 
         <h3 class="text-center">Requirements</h3>
@@ -23,8 +23,9 @@
         
             
         {% endfor %}
-
-        <div class="card" style="width: 90rem;">
+        <hr style="border: 2px solid darkblue;">
+        <h3 style="text-align: center; justify-content: center;">Others</h3>
+        <div class="card mt-2" style="width: 90rem;">
             <ul class="list-group list-group-flush mt-3 border-none">
                 <li class="list-group-item"> Salary: {{ job_post.salary }}</li>
                 <li class="list-group-item"> Type of Job: {{ job_post.job_type }}</li>
@@ -32,11 +33,17 @@
                 <li class="list-group-item"> Category: {{ job_post.category }}</li>
                 <li class="list-group-item"> Position: {{ job_post.position }}</li>
                 <li class="list-group-item"> Provider: {{ job_post.employer }}</li>
+                <li class="list-group-item">Availability: {{ job_post.is_open }}</li>
             </ul>
         </div>
 
         <div class="card-body align-items-center justify-content-center">
-            <a href="{% url 'apply_job' pk=job_post.id %}" class="card-link btn btn-primary btn-lg">Apply for this Job</a>
+            
+            {% if job_post.is_open == True %}
+                <a href="{% url 'apply_job' pk=job_post.id %}" class="card-link btn btn-primary btn-lg">Apply for this Job</a>
+            {% endif %}
+                
+            
             <a href="{% url 'job_list' %}" class="card-link btn btn-primary btn-lg">See other Jobs</a>
         </div>
     </div>

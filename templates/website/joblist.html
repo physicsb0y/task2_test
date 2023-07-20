@@ -19,7 +19,7 @@
                         <option value="">Select City</option>
                         
                         {% for location in unique_locations %}
-                            <option value="{{ location }}">{{ location }}</option>
+                            <option value="{{ location }}">{{ location.location_name }}</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -73,17 +73,23 @@
 
     <div class="col-md-8">
         {% for job_post in job_posts %}
+        
+        {% if job_post.is_open == True %}
+            
+        
+            
             <div class="d-grid gap-2">
                 <a class="btn btn-light" href="{% url 'job_detail' job_post.id %}">
                     <h3>{{ job_post.title }}</h3>
-                    <p>{{ job_post.description|truncatechars:50 }}</p>
+                    <p>{{ job_post.description|truncatechars:100|safe }}</p>
                 </a>
             </div>
             <hr>
+        {% endif %}
         {% empty %}
 
             <p>No job posts available.</p>
-
+        
         {% endfor %}
     </div>
 </div>

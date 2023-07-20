@@ -1,10 +1,14 @@
+from typing import Any, Dict
+from django.forms.models import BaseModelForm
+from django.http import HttpResponse
 from django.shortcuts import render
-from django.views.generic import ListView, CreateView, DetailView, DeleteView
+from django.views.generic import ListView, CreateView, DetailView, DeleteView, UpdateView
 from django.views import View
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.shortcuts import get_object_or_404
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view, permission_classes
@@ -13,8 +17,8 @@ from rest_framework.permissions import IsAuthenticated
 from .serializers import JobPostSerializer
 
 from accounts.models import CustomUser
-from .forms import JobPostForm, BlogPostForm, SearchForm, JobSearchForm, JobApplicationForm
-from .models import JobPost, Blog, Category, JobApplication
+from .forms import JobPostForm, BlogPostForm, BlogUpdateForm, SearchForm, JobSearchForm, JobApplicationForm
+from .models import JobPost, Blog, Category, JobApplication, Location
 
 # Create your views here.
 
@@ -26,8 +30,10 @@ class IndexView(ListView):
         context = super().get_context_data(**kwargs)
         users = CustomUser.objects.all()
         categories = Category.objects.all()
+        locations = Location.objects.all()
         context["users"] = users
         context["categories"] = categories
+        context['locations'] = locations
         return context
     
 
@@ -55,7 +61,7 @@ class JobListView(ListView):
 
     def get(self, request):
         job_posts = JobPost.objects.all()
-        unique_locations = set(JobPost.objects.values_list('location', flat=True))
+        unique_locations = Location.objects.all()
         unique_job_type = set(JobPost.objects.values_list('job_type', flat=True))
         unique_position = set(JobPost.objects.values_list('position', flat=True))
         unique_category = Category.objects.all()
@@ -88,12 +94,24 @@ class BlogCreateView(CreateView):
         form.instance.author = self.request.user
         response = super().form_valid(form)
         return response
+    
+
+class BlogUpdateView(UpdateView):
+    model = Blog
+    form_class = BlogUpdateForm
+    template_name = 'website/blogupdate.html'
+    success_url = reverse_lazy('blog_page')
+
+    def form_valid(self, form):
+        return super().form_valid(form)
+
 
 
 class BlogPage(ListView):
     model = Blog
     template_name = 'website/blog_page.html'
     context_object_name = 'blogs'
+
 
 class SingleBlogView(DetailView):
     model = Blog
@@ -103,6 +121,11 @@ class SingleBlogView(DetailView):
 
 def contact(request):
     return render(request, 'website/contact.html')
+
+
+class BlogDeleteView(DeleteView):
+    model = Blog
+    success_url = reverse_lazy('index')
 
 
 
@@ -165,7 +188,7 @@ class JobSearchView(ListView):
                 results = results.filter(title__icontains=job_search_query)
 
             if search_area:
-                results = results.filter(location__icontains=search_area)
+                results = results.filter(location__location_name__icontains=search_area)
 
             if min_salary and max_salary:
                 results = results.filter(salary__range=(min_salary, max_salary))
@@ -185,7 +208,7 @@ class JobSearchView(ListView):
             if category:
                 results = results.filter(category__category__icontains=category)
 
-            unique_locations = set(JobPost.objects.values_list('location', flat=True))
+            unique_locations = Location.objects.all()
             unique_job_type = set(JobPost.objects.values_list('job_type', flat=True))
             unique_position = set(JobPost.objects.values_list('position', flat=True))
             unique_category = Category.objects.all()
@@ -211,7 +234,7 @@ class JobSearchView(ListView):
        
 
 
-class JobApplicationView(CreateView):
+class JobApplicationView(LoginRequiredMixin, CreateView):
     model = JobApplication
     form_class = JobApplicationForm
     template_name = 'website/job_apply.html'
@@ -220,6 +243,16 @@ class JobApplicationView(CreateView):
     def get(self, request, *args, **kwargs):
         self.job_post = get_object_or_404(JobPost, id=self.kwargs['pk'])
         return super().get(request, *args, **kwargs)
+
+
+    def get_initial(self):
+        initial = super().get_initial()
+        user = self.request.user
+        initial['first_name'] = user.first_name
+        initial['last_name'] = user.last_name
+        initial['email'] = user.email
+        return initial
+
 
     def form_valid(self, form):
         job_post_id = self.kwargs['pk']

@@ -1,10 +1,14 @@
+from django.forms.models import BaseModelForm
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from django.views.generic import CreateView, ListView
+from django.views.generic import CreateView, ListView, DetailView
+from django.views.generic.edit import UpdateView
 from django.urls import reverse_lazy
 from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth import authenticate
 
 from .models import CustomUser
-from .forms import JobSeekerForm, EmployerForm
+from .forms import JobSeekerForm, EmployerForm, EmployerUpdateForm, JobSeekerUpdateForm
 
 # Create your views here.
 
@@ -21,6 +25,10 @@ class JobSeekerRegistrationView(CreateView):
         user.save()
         response = super().form_valid(form)
         return response
+    
+    def get_success_url(self):
+        user = authenticate(user)
+        return redirect('index')
 
 class EmployerRegistrationView(CreateView):
     form_class = EmployerForm
@@ -55,15 +63,37 @@ class CustomLogoutView(LogoutView):
 
 
 
-# class index(ListView):
-#     model = CustomUser
-#     template_name = 'website/base.html'
-#     context_object_name = 'users'
+
+class CustomEmployeeUpdateView(UpdateView):
+    model = CustomUser
+    template_name = "accounts/profile/updateprofile.html"
+    form_class = EmployerUpdateForm
+    success_url = reverse_lazy('index')
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        return response
+
+
+
+class CustomJobSeekerUpdateView(UpdateView):
+    model = CustomUser
+    template_name = "accounts/profile/updateprofile.html"
+    form_class = JobSeekerUpdateForm
+    success_url = reverse_lazy('index')
+
+    def form_Valid(self, form):
+        response = super().form_valid(form)
+        return response
 
 
 
 
 
+class ProfileDetailView(DetailView):
+    model = CustomUser
+    template_name = "accounts/profile/profiledetail.html"
+    context_object_name = 'users'
 
 
 

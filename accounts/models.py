@@ -2,6 +2,7 @@ from django.contrib.auth.models import User, AbstractUser, Group, Permission
 from django.db import models
 from pathlib import Path
 
+
 def user_directory_path(instance, filename):
     username = instance.username
     if filename == 'defaultpp.jpg':
@@ -20,6 +21,8 @@ class CustomUser(AbstractUser):
     user_type = models.CharField(max_length=35, choices=USER_TYPE_CHOICES)
     image = models.ImageField(upload_to=user_directory_path, null=True, blank=True, default='defaultpp.jpg')
     phone = models.IntegerField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    description = models.TextField(blank=True, null=True)
 
     groups = models.ManyToManyField(
         Group,

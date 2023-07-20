@@ -19,7 +19,7 @@ class JobSeekerForm(UserCreationForm):
 
     class Meta:
         model = CustomUser
-        fields = ['first_name', 'last_name', 'username', 'image', 'email', 'phone', 'password1', 'password2', 'user_type']
+        fields = ['first_name', 'last_name', 'username', 'image', 'email', 'phone', 'password1', 'password2', 'user_type', 'description']
 
 
 class EmployerForm(UserCreationForm):
@@ -35,16 +35,16 @@ class EmployerForm(UserCreationForm):
 
     class Meta:
         model = CustomUser
-        fields = ['first_name', 'last_name', 'username', 'image', 'email', 'phone', 'password1', 'password2', 'user_type']
+        fields = ['first_name', 'last_name', 'username', 'image', 'email', 'phone', 'password1', 'password2', 'user_type', 'description']
 
 
 class JobSeekerUpdateForm(forms.ModelForm):
     class Meta:
         model = CustomUser
-        fields = ['first_name', 'last_name', 'username', 'image', 'email', 'phone']
+        fields = ['first_name', 'last_name', 'username', 'image', 'email', 'phone', 'description']
 
 
 class EmployerUpdateForm(forms.ModelForm):
     class Meta:
         model = CustomUser
-        fields = ['first_name', 'last_name', 'username', 'image', 'email', 'phone']
+        fields = ['first_name', 'last_name', 'username', 'image', 'email', 'phone', 'description']
